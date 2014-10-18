@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<config>
+
+<pause_combo>
+  <pause_key>4</pause_key>
+  <pause_key>5</pause_key>
+  <pause_key>8</pause_key>
+  <pause_key>9</pause_key>
+</pause_combo>
+
+<gpio>
+  <gpio_gpleft>1</gpio_gpleft>
+  <gpio_gpright>2</gpio_gpright>
+  <gpio_gpup>3</gpio_gpup>
+  <gpio_gpdown>4</gpio_gpdown>
+  <gpio_L>5</gpio_L>
+  <gpio_R>6</gpio_R>
+  <gpio_A>7</gpio_A>
+  <gpio_B>8</gpio_B>
+  <gpio_X>9</gpio_X>
+  <gpio_Y>10</gpio_Y>
+  <gpio_select>11</gpio_select>
+  <gpio_start>12</gpio_start>
+  <gpio_pause>13</gpio_pause>
+</gpio>
+
+<player1>
+  <vaxis>1</vaxis>
+  <haxis>0</haxis>
+  <L>4</L>
+  <R>5</R>
+  <A>1</A>
+  <B>2</B>
+  <X>0</X>
+  <Y>3</Y>
+  <select>8</select>
+  <start>9</start>
+</player1>
+
+<snes>
+  <game>
+    <title>Title 1</title>
+    <rom>SecretOfMana.zip</rom>
+    <image>gametitle1.png</image>
+    <year>1999</year>
+    <genre>Genre1</genre>
+    <genre>Genre2</genre>
+    <text>Description text line 1</text>
+    <text>Description text line 2</text>
+    <text>Description text line 3</text>
+    <text>Description text line 4</text>
+    <text>Description text line 5</text>
+  </game>
+  <game>
+    <title>Title 2</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 3</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 4</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 5</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 6</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 7</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 8</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 9</title>
+    <rom>dummy.smc</rom>
+  </game>
+    <game>
+    <title>Title 10</title>
+    <rom>dummy.smc</rom>
+  </game>
+</snes>
+</config>
