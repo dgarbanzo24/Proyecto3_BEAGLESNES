@@ -1,0 +1,27 @@
+DESCRIPTION = "Linux Bluetooth Stack Userland libraries V4"
+SECTION = "libs"
+PRIORITY = "optional"
+HOMEPAGE = "http://www.bluez.org"
+LICENSE = "GPL"
+INC_PR = "r1"
+
+LIC_FILES_CHKSUM = "file://COPYING;md5=12f884d2ae1ff87c09e5b7ccc2c4ca7e \
+                    file://README;beginline=1;endline=7;md5=d3e237af71522cc2a3c89dbaf48b345d"
+
+SRC_URI = "http://www.kernel.org/pub/linux/bluetooth/bluez-${PV}.tar.gz \
+        file://avinfo-link.patch;striplevel=0"
+
+S = "${WORKDIR}/bluez-${PV}"
+
+inherit autotools
+
+EXTRA_OECONF = "\
+  --disable-tools \
+  --disable-audio \
+  --disable-network \
+  --disable-serial \
+  --disable-service \
+  --disable-usb \
+"
+
+FILES_${PN} = "${libdir}/libbluetooth.so.*"
