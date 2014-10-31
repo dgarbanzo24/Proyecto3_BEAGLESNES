@@ -36,4 +36,6 @@ INCLUDES=-I/home/carlos92/Escritorio/beaglebone-daisy-11.0.0/IBB3/tmp/sysroots/b
 
 cross-serial:
 	$(CXX) -I/home/carlos92/Escritorio/beaglebone-daisy-11.0.0/IBB3/tmp/sysroots/beaglebone/usr/include config_GPIOs.cpp -o writeGPIOsapp
-	$(CXX) $(INCLUDES) -o leer_puertoapp $(CFLAGS) $(LDFLAGS) -shared -fPIC leer_puerto.cpp  -L/home/carlos92/Escritorio/beaglebone-daisy-11.0.0/IBB3/tmp/sysroots/beaglebone/usr/lib -lserial
+	$(CXX) $(INCLUDES) -o leer_puertoapp $(CFLAGS) $(LDFLAGS) -fPIC leer_puerto.cpp  -L/home/carlos92/Escritorio/beaglebone-daisy-11.0.0/IBB3/tmp/sysroots/beaglebone/usr/lib -lserial
+	$(CXX) $(INCLUDES) -o correapps $(CFLAGS) $(LDFLAGS) -fPIC corre_apps.cpp  -L/home/carlos92/Escritorio/beaglebone-daisy-11.0.0/IBB3/tmp/sysroots/beaglebone/usr/lib -lserial -lpthread -lm
+	

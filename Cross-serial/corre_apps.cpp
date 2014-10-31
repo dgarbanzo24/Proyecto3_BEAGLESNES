@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <math.h>
+#include <pthread.h>
 #include <SerialStream.h>
 #include <iostream>
 #include <cstdlib>
@@ -7,31 +10,8 @@
 using namespace std;
 using namespace LibSerial;
 
-//Encabezados de las funciones
-const char* hex_char_to_bin(char c);
-string hexToBin(string hex);
-
-// Funcion que recibe un char (parte de un nÃºmero hexa) y devuelve su equivalente en bin (string).
-const char* hex_char_to_bin(char c){
-    switch(toupper(c)){
-        case '0': return "0000";
-        case '1': return "0001";case '2': return "0010";case '3': return "0011";
-        case '4': return "0100";case '5': return "0101";case '6': return "0110";
-        case '7': return "0111";case '8': return "1000";case '9': return "1001";
-        case 'A': return "1010";case 'B': return "1011";case 'C': return "1100";
-        case 'D': return "1101";case 'E': return "1110";case 'F': return "1111";}}
-
-//Funcion que covierte un numero hexa (string) y devuelve su equivalente en bin (string).
-
-std::string hexToBin(string hexa){
-	printf("Inicia conversion...\n");
-    std::string bina; // variable que guarda la representaciÃ³n del string hexadecimal convertido en binario
-    for(int i = 0; i != hexa.length(); ++i){
-	   printf("convertir en progreso...\n");
-       bina += hex_char_to_bin(hexa[i]);}
-    return bina;}
-    
-int main( int argc, char** argv){
+void *Prueba(void *arg)
+{
 	int b=0;
 	
 	system("echo 60 > /sys/class/gpio/export");
@@ -165,72 +145,20 @@ int main( int argc, char** argv){
 		else{system("echo low > /sys/class/gpio/gpio61/direction");}
 		b=0;
 	}
-		
-		//usleep(10000);
-        
-        
-        
-		//printf("Next byte %c",next_byte);
- 	//cout<<'\n'<<next_byte<<' ';	
-	//cerr << hex << static_cast<char>(next_byte) << " ";
-      
-	/*//Convertir el valor en hexa en binario
-	result+=next_byte;	
-	printf("continua...\n");
-	std::string bin = hexToBin(result);	  
-	printf("Conversion hecha...\n");      
-	std::cout<<": "<<bin<<'\n';*/
 }
 }
 }
 
-	/*//Recorrer string bin para guardar cada bit por separado.
-	int e=0;
-	for (e=0; e<bin.size();e++){
-		if (e<1){
-			datos[e+contador*4] = bin[e];}
-		if (e<2 && e>0){
-			datos[e+contador*4] = bin[e];}
-		if (e<3 && e>1){
-			datos[e+contador*4] = bin[e];}
-		if (e<4 && e>2){
-			datos[e+contador*4] = bin[e];}
-	} 
-
-	contador++;
-	if (contador==4){
-	contador=0;
-
-//Aqui deberia implementarse la progra para los gpios de la bbb.
-//////////////////////////////////////////////////////////////////////////////////////
-	cout<<'\n'<<"1er byte: "<<'\n';
-	cout<<datos[0]<<'\n';
-	cout<<datos[1]<<'\n';
-	cout<<datos[2]<<'\n';
-	cout<<datos[3]<<'\n';
-	cout<<datos[4]<<'\n';
-	cout<<datos[5]<<'\n';
-	cout<<datos[6]<<'\n';
-	cout<<datos[7]<<'\n';
-	cout<<'\n'<<"2do byte: "<<'\n';
-	cout<<datos[8]<<'\n';
-	cout<<datos[9]<<'\n';
-	cout<<datos[10]<<'\n';
-	cout<<datos[11]<<'\n';
-	cout<<datos[12]<<'\n';
-	cout<<datos[13]<<'\n';
-	cout<<datos[14]<<'\n';
-	cout<<datos[15]<<'\n'<<'\n';}	
-	
-	}
-	i=i-1;
-	}   
-	return EXIT_SUCCESS;}*/
 
 
 
-
-
-
-
-
+int main(){
+	system("clear");
+	FILE * SNES;
+	pthread_t id0;
+	pthread_create(&id0, NULL , Prueba , NULL);
+	SNES = popen("./snes9x-sdl","w");
+	pthread_join(id0, NULL);
+	close(SNES);
+	return 0;
+}

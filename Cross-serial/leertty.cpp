@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <string.h>
+#include <fstream>
+#include <cmath>
 
 using namespace std;
 using namespace LibSerial;
@@ -26,41 +28,78 @@ const char* hex_char_to_bin(char c){
 std::string hexToBin(string hexa){
 	printf("Inicia conversion...\n");
     std::string bina; // variable que guarda la representaciÃ³n del string hexadecimal convertido en binario
-    for(int i = 0; i != hexa.length(); ++i){
-	   printf("convertir en progreso...\n");
-       bina += hex_char_to_bin(hexa[i]);}
+    for(int i = 0; i != hexa.length(); ++i)
+       bina += hex_char_to_bin(hexa[i]);
     return bina;}
-    
+
+
+
+
+
+void A_to_B(const char* input) 
+{
+	int ascii;           // used to store the ASCII number of a character
+	int length = strlen(input);        //find the length of the user's input
+	
+	std::cout << " ";
+	
+	for(int x = 0; x < length; x++)          //repeat until user's input have all been read
+	// x < length because the last character is "\0"
+	{
+		ascii = input[x];        //store a character in its ASCII number
+		
+		/* Refer to http://www.wikihow.com/Convert-from-Decimal-to-Binary for conversion method used 
+		 * in this program*/		
+		
+		char* binary_reverse = new char [9];       //dynamic memory allocation
+		char* binary = new char [9];
+		
+		int y = 0;    //counter used for arrays
+		
+		while(ascii != 1)    //continue until ascii == 1
+		{
+			if(ascii % 2 == 0)    //if ascii is divisible by 2
+			{
+				binary_reverse[y] = '0';   //then put a zero
+			}
+			else if(ascii % 2 == 1)    //if it isnt divisible by 2
+			{
+				binary_reverse[y] = '1';   //then put a 1
+			}
+			ascii /= 2;    //find the quotient of ascii / 2
+			y++;    //add 1 to y for next loop
+		}
+		
+		if(ascii == 1)    //when ascii is 1, we have to add 1 to the beginning
+		{
+			binary_reverse[y] = '1';
+			y++;
+		}
+		
+		if(y < 8)  //add zeros to the end of string if not 8 characters (1 byte)
+		{
+			for(; y < 8; y++)  //add until binary_reverse[7] (8th element)
+			{
+				binary_reverse[y] = '0';
+			}
+		}
+	
+		for(int z = 0; z < 8; z++)  //our array is reversed. put the numbers in the rigth order (last comes first)
+		{
+			binary[z] = binary_reverse[7 - z];
+		}
+		
+		std::cout << binary;   //display the 8 digit binary number
+		
+		delete [] binary_reverse;     //free the memory created by dynamic mem. allocation
+		delete [] binary;
+	}
+	
+	std::cout << endl;
+}
+
 int main( int argc, char** argv){
-	int b=0;
-	
-	system("echo 60 > /sys/class/gpio/export");
-	system("echo 48 > /sys/class/gpio/export");
-	system("echo 51 > /sys/class/gpio/export");
-	system("echo 13 > /sys/class/gpio/export");
-	system("echo 12 > /sys/class/gpio/export");
-	system("echo 49 > /sys/class/gpio/export");
-	system("echo 113 > /sys/class/gpio/export");
-	system("echo 117 > /sys/class/gpio/export");
-	system("echo 112 > /sys/class/gpio/export");
-	system("echo 111 > /sys/class/gpio/export");
-	system("echo 17 > /sys/class/gpio/export");
-	system("echo 110 > /sys/class/gpio/export");
-	system("echo 61 > /sys/class/gpio/export");
-	
-	system("echo low > /sys/class/gpio/gpio60/direction");
-	system("echo low > /sys/class/gpio/gpio48/direction");
-	system("echo low > /sys/class/gpio/gpio51/direction");
-	system("echo low > /sys/class/gpio/gpio13/direction");
-	system("echo low > /sys/class/gpio/gpio12/direction");
-	system("echo low > /sys/class/gpio/gpio49/direction");
-	system("echo low > /sys/class/gpio/gpio113/direction");
-	system("echo low > /sys/class/gpio/gpio117/direction");
-	system("echo low > /sys/class/gpio/gpio112/direction");
-	system("echo low > /sys/class/gpio/gpio111/direction");
-	system("echo low > /sys/class/gpio/gpio17/direction");
-	system("echo low > /sys/class/gpio/gpio110/direction");
-	system("echo low > /sys/class/gpio/gpio61/direction");
+
 //Acondicionamiento del puerto serial para su correcto funcionamiento.
 //////////////////////////////////////////////////////////////////////////////
 	
@@ -103,70 +142,23 @@ int main( int argc, char** argv){
     string datos[16];
     int contador=0;
  
-	sleep(5);
    int i=3;
    std::string result=" ";
    while(i>0){ 
-	//printf("Ejecutando...\n");
+	printf("Ejecutando...\n");
    	//Esperar un momento para que la informacion este lista.
 	while( serial_port.rdbuf()->in_avail() == 0 ) {
-		//printf("Esperando byte\n");
+		printf("Esperando byte\n");
         usleep(100) ;}
     	//Mantener leyendo el dato del puerto serial.
     	while( serial_port.rdbuf()->in_avail() > 0  ){
-		//	printf("Leyendo byte \n");
+			printf("Leyendo byte \n");
         char next_byte;
         serial_port.get(next_byte);
-        //usleep(100);
-        //printf("Byte leido \n");
-        //std::cout << "Test Inside While Loop: " << next_byte << "\n";
-        //usleep(10000);
-        //std::cout << "Entero recibido: " << int(next_byte) << "\n";
-        
-        int binario[8];
-        int residuo = int(next_byte)-40;
-        i=0;
-        while(i<8){
-			binario[i]=residuo%2;
-			residuo=residuo/2;
-			//std::cout << binario[i] << "\n";
-			i++;
-		}
-		
-		if(b==0){
-		if(binario[0]==1){system("echo high > /sys/class/gpio/gpio60/direction");}
-		else{system("echo low > /sys/class/gpio/gpio60/direction");}
-		if(binario[1]==1){system("echo high > /sys/class/gpio/gpio48/direction");}
-		else{system("echo low > /sys/class/gpio/gpio48/direction");}
-		if(binario[2]==1){system("echo high > /sys/class/gpio/gpio51/direction");}
-		else{system("echo low > /sys/class/gpio/gpio51/direction");}
-		if(binario[3]==1){system("echo high > /sys/class/gpio/gpio13/direction");}
-		else{system("echo low > /sys/class/gpio/gpio13/direction");}
-		if(binario[4]==1){system("echo high > /sys/class/gpio/gpio12/direction");}
-		else{system("echo low > /sys/class/gpio/gpio12/direction");}
-		if(binario[5]==1){system("echo high > /sys/class/gpio/gpio49/direction");}
-		else{system("echo low > /sys/class/gpio/gpio49/direction");}
-		if(binario[6]==1){system("echo high > /sys/class/gpio/gpio113/direction");}
-		else{system("echo low > /sys/class/gpio/gpio113/direction");}
-		if(binario[7]==1){system("echo high > /sys/class/gpio/gpio117/direction");}
-		else{system("echo low > /sys/class/gpio/gpio117/direction");}
-		b=1;
-	}
-	else{
-		if(binario[0]==1){system("echo high > /sys/class/gpio/gpio112/direction");}
-		else{system("echo low > /sys/class/gpio/gpio112/direction");}
-		if(binario[1]==1){system("echo high > /sys/class/gpio/gpio111/direction");}
-		else{system("echo low > /sys/class/gpio/gpio111/direction");}
-		if(binario[2]==1){system("echo high > /sys/class/gpio/gpio17/direction");}
-		else{system("echo low > /sys/class/gpio/gpio17/direction");}
-		if(binario[3]==1){system("echo high > /sys/class/gpio/gpio110/direction");}
-		else{system("echo low > /sys/class/gpio/gpio110/direction");}
-		if(binario[4]==1){system("echo high > /sys/class/gpio/gpio61/direction");}
-		else{system("echo low > /sys/class/gpio/gpio61/direction");}
-		b=0;
-	}
-		
-		//usleep(10000);
+        usleep(100);
+        printf("Byte leido \n");
+        std::cout << "Test Inside While Loop " << next_byte << "\n";
+        usleep(10000);
         
         
         
@@ -174,12 +166,13 @@ int main( int argc, char** argv){
  	//cout<<'\n'<<next_byte<<' ';	
 	//cerr << hex << static_cast<char>(next_byte) << " ";
       
-	/*//Convertir el valor en hexa en binario
+	//Convertir el valor en hexa en binario
 	result+=next_byte;	
 	printf("continua...\n");
-	std::string bin = hexToBin(result);	  
+	A_to_B(next_byte);
+	//std::string bin = hexToBin(result);	  
 	printf("Conversion hecha...\n");      
-	std::cout<<": "<<bin<<'\n';*/
+	//std::cout<<": "<<bin<<'\n';
 }
 }
 }
